@@ -1,21 +1,21 @@
 import { useState } from 'react'
-import { remixContent } from './claude'
 
 function App() {
   const [inputText, setInputText] = useState('')
   const [outputText, setOutputText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
   const handleRemix = async () => {
     if (!inputText.trim()) return
+
     setIsLoading(true)
-    setError(null)
     try {
-      const remixedText = await remixContent(inputText)
+      // TODO: Implement API call to remix content
+      // For now, we'll just reverse the text as a placeholder
+      const remixedText = inputText.split('').reverse().join('')
       setOutputText(remixedText)
-    } catch (err: any) {
-      setError(err.message || 'An error occurred')
+    } catch (error) {
+      console.error('Error remixing content:', error)
     } finally {
       setIsLoading(false)
     }
@@ -49,10 +49,6 @@ function App() {
               {isLoading ? 'Remixing...' : 'Remix Content'}
             </button>
           </div>
-
-          {error && (
-            <div className="text-red-600 text-center">{error}</div>
-          )}
 
           {outputText && (
             <div>
