@@ -2,6 +2,7 @@ import Anthropic from '@anthropic-ai/sdk';
 
 const anthropic = new Anthropic({
   apiKey: import.meta.env.VITE_CLAUDE_API_KEY,
+  dangerouslyAllowBrowser: true,
 });
 
 export async function remixContent(prompt: string): Promise<string> {
@@ -15,5 +16,5 @@ export async function remixContent(prompt: string): Promise<string> {
     messages: [{ role: "user", content: prompt }],
   });
 
-  return msg.content?.[0]?.text || '';
+  return msg.content?.[0]?.type === 'text' ? msg.content[0].text : '';
 } 
