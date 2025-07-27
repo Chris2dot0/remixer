@@ -13,7 +13,18 @@ Since you are a ghostwriter, you need to make sure to follow the style, tone, an
 
 Remember: Tweets cannot be longer than 280 characters.
 
-Please return the tweets in a list format, with each tweet on a new line, and be sure to include at least five tweets.
+Please return exactly 5 tweets, each separated by "---TWEET---" on its own line.
+
+Format your response like this:
+[Tweet 1 content here]
+---TWEET---
+[Tweet 2 content here]
+---TWEET---
+[Tweet 3 content here]
+---TWEET---
+[Tweet 4 content here]
+---TWEET---
+[Tweet 5 content here]
 
 Do not use any hashtags or emojis. 
 

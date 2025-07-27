@@ -3,22 +3,35 @@ import { tweetsFromPost } from './claude'
 
 function App() {
   const [inputText, setInputText] = useState('')
-  const [outputText, setOutputText] = useState('')
+  const [tweets, setTweets] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
 
   const handleRemix = async () => {
     if (!inputText.trim()) return
     setIsLoading(true)
     setError(null)
     try {
-      const remixedText = await tweetsFromPost(inputText)
-      setOutputText(remixedText)
+      const response = await tweetsFromPost(inputText)
+      // Parse the response to extract individual tweets
+      const tweetArray = response.split('---TWEET---').map(tweet => tweet.trim()).filter(tweet => tweet.length > 0)
+      setTweets(tweetArray)
     } catch (err: any) {
       setError(err.message || 'An error occurred while remixing.')
-      setOutputText('')
+      setTweets([])
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const copyToClipboard = async (text: string, index: number) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedIndex(index)
+      setTimeout(() => setCopiedIndex(null), 2000) // Reset after 2 seconds
+    } catch (err) {
+      console.error('Failed to copy text: ', err)
     }
   }
 
@@ -112,29 +125,77 @@ function App() {
         </svg>
       </div>
 
-      {/* Output Field */}
-      {outputText && (
+      {/* Tweets Display */}
+      {tweets.length > 0 && (
         <div style={{ 
-          maxWidth: '600px', 
-          margin: '0 auto 30px auto',
-          textAlign: 'center'
+          maxWidth: '800px', 
+          margin: '0 auto 30px auto'
         }}>
-          <textarea
-            style={{
-              width: '100%',
-              height: '120px',
-              padding: '15px',
-              border: '1px solid #333',
-              borderRadius: '0',
-              fontSize: '16px',
-              fontFamily: 'Arial, sans-serif',
-              resize: 'none',
-              backgroundColor: '#f9f9f9'
-            }}
-            value={outputText}
-            readOnly
-            placeholder="Remixed content will appear here..."
-          />
+          <h2 style={{ 
+            textAlign: 'center', 
+            fontSize: '1.5rem', 
+            marginBottom: '20px',
+            color: 'black'
+          }}>
+            Generated Tweets
+          </h2>
+          <div style={{ display: 'grid', gap: '15px' }}>
+            {tweets.map((tweet, index) => (
+              <div
+                key={index}
+                style={{
+                  padding: '15px',
+                  border: '1px solid #ddd',
+                  backgroundColor: '#f9f9f9',
+                  borderRadius: '5px',
+                  fontSize: '16px',
+                  lineHeight: '1.4',
+                  fontFamily: 'Arial, sans-serif',
+                  position: 'relative'
+                }}
+              >
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center',
+                  marginBottom: '10px'
+                }}>
+                  <div style={{ 
+                    fontSize: '12px', 
+                    color: '#666', 
+                    fontWeight: 'bold'
+                  }}>
+                    Tweet {index + 1}
+                  </div>
+                  <button
+                    onClick={() => copyToClipboard(tweet, index)}
+                    style={{
+                      padding: '5px 10px',
+                      backgroundColor: copiedIndex === index ? '#4CAF50' : '#f0f0f0',
+                      border: '1px solid #ccc',
+                      borderRadius: '3px',
+                      fontSize: '12px',
+                      cursor: 'pointer',
+                      color: copiedIndex === index ? 'white' : '#333',
+                      fontFamily: 'Arial, sans-serif'
+                    }}
+                  >
+                    {copiedIndex === index ? 'Copied!' : 'Copy'}
+                  </button>
+                </div>
+                <div style={{ marginBottom: '10px' }}>
+                  {tweet}
+                </div>
+                <div style={{ 
+                  fontSize: '11px', 
+                  color: '#999',
+                  textAlign: 'right'
+                }}>
+                  {tweet.length} characters
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
