@@ -23,53 +23,132 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-8">Content Remixer</h1>
-        
-        <div className="space-y-6">
-          <div>
-            <label htmlFor="input" className="block text-sm font-medium text-gray-700 mb-2">
-              Original Content
-            </label>
-            <textarea
-              id="input"
-              className="w-full h-48 p-4 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              placeholder="Paste your content here..."
-            />
-          </div>
-
-          <div className="flex justify-center">
-            <button
-              onClick={handleRemix}
-              disabled={isLoading || !inputText.trim()}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? 'Remixing...' : 'Remix Content'}
-            </button>
-          </div>
-
-          {error && (
-            <div className="text-red-600 text-center">{error}</div>
-          )}
-
-          {outputText && (
-            <div>
-              <label htmlFor="output" className="block text-sm font-medium text-gray-700 mb-2">
-                Remixed Content
-              </label>
-              <textarea
-                id="output"
-                className="w-full h-48 p-4 border border-gray-300 rounded-lg shadow-sm bg-white"
-                value={outputText}
-                readOnly
-              />
-            </div>
-          )}
-        </div>
+    <div style={{ 
+      minHeight: '100vh', 
+      backgroundColor: 'white', 
+      padding: '20px',
+      fontFamily: 'Arial, sans-serif'
+    }}>
+      {/* Header */}
+      <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+        <h1 style={{ 
+          fontSize: '2.5rem', 
+          fontWeight: 'bold', 
+          color: 'black',
+          margin: '0 0 10px 0'
+        }}>
+          Content Remixer
+        </h1>
+        <p style={{ 
+          fontSize: '1rem', 
+          color: 'black',
+          margin: '0'
+        }}>
+          Transform your content with AI-powered remixing
+        </p>
       </div>
+
+      {/* Input Field */}
+      <div style={{ 
+        maxWidth: '600px', 
+        margin: '0 auto 30px auto',
+        textAlign: 'center'
+      }}>
+        <textarea
+          style={{
+            width: '100%',
+            height: '120px',
+            padding: '15px',
+            border: '1px solid #333',
+            borderRadius: '0',
+            fontSize: '16px',
+            fontFamily: 'Arial, sans-serif',
+            resize: 'none'
+          }}
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          placeholder="Enter your content here..."
+        />
+      </div>
+
+      {/* Remix Button */}
+      <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+        <button
+          onClick={handleRemix}
+          disabled={isLoading || !inputText.trim()}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#f0f0f0',
+            border: '1px solid #ccc',
+            color: '#333',
+            fontSize: '16px',
+            cursor: 'pointer',
+            fontFamily: 'Arial, sans-serif'
+          }}
+        >
+          {isLoading ? 'Remixing...' : 'Remix Content'}
+        </button>
+      </div>
+
+      {/* Large Lightning Bolt Icon */}
+      <div style={{ 
+        textAlign: 'center', 
+        marginBottom: '30px'
+      }}>
+        <svg 
+          width="200" 
+          height="200" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="#ccc" 
+          strokeWidth="1"
+          style={{ margin: '0 auto' }}
+        >
+          <path 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            d="M13 10V3L4 14h7v7l9-11h-7z" 
+          />
+        </svg>
+      </div>
+
+      {/* Output Field */}
+      {outputText && (
+        <div style={{ 
+          maxWidth: '600px', 
+          margin: '0 auto 30px auto',
+          textAlign: 'center'
+        }}>
+          <textarea
+            style={{
+              width: '100%',
+              height: '120px',
+              padding: '15px',
+              border: '1px solid #333',
+              borderRadius: '0',
+              fontSize: '16px',
+              fontFamily: 'Arial, sans-serif',
+              resize: 'none',
+              backgroundColor: '#f9f9f9'
+            }}
+            value={outputText}
+            readOnly
+            placeholder="Remixed content will appear here..."
+          />
+        </div>
+      )}
+
+      {/* Error Message */}
+      {error && (
+        <div style={{ 
+          textAlign: 'center', 
+          color: 'red',
+          fontSize: '14px',
+          marginTop: '20px'
+        }}>
+          {error}
+        </div>
+      )}
     </div>
   )
 }
