@@ -6,7 +6,6 @@ function App() {
   const [tweets, setTweets] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
 
   const handleRemix = async () => {
     if (!inputText.trim()) return
@@ -25,14 +24,10 @@ function App() {
     }
   }
 
-  const copyToClipboard = async (text: string, index: number) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      setCopiedIndex(index)
-      setTimeout(() => setCopiedIndex(null), 2000) // Reset after 2 seconds
-    } catch (err) {
-      console.error('Failed to copy text: ', err)
-    }
+  const openTwitterWithTweet = (tweet: string) => {
+    const encodedTweet = encodeURIComponent(tweet)
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodedTweet}`
+    window.open(twitterUrl, '_blank')
   }
 
   return (
@@ -168,19 +163,19 @@ function App() {
                     Tweet {index + 1}
                   </div>
                   <button
-                    onClick={() => copyToClipboard(tweet, index)}
+                    onClick={() => openTwitterWithTweet(tweet)}
                     style={{
                       padding: '5px 10px',
-                      backgroundColor: copiedIndex === index ? '#4CAF50' : '#f0f0f0',
-                      border: '1px solid #ccc',
+                      backgroundColor: '#1DA1F2',
+                      border: '1px solid #1DA1F2',
                       borderRadius: '3px',
                       fontSize: '12px',
                       cursor: 'pointer',
-                      color: copiedIndex === index ? 'white' : '#333',
+                      color: 'white',
                       fontFamily: 'Arial, sans-serif'
                     }}
                   >
-                    {copiedIndex === index ? 'Copied!' : 'Copy'}
+                    Tweet
                   </button>
                 </div>
                 <div style={{ marginBottom: '10px' }}>
