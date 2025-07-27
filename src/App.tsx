@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { remixContent } from './claude'
+import { tweetsFromPost } from './claude'
 
 function App() {
   const [inputText, setInputText] = useState('')
@@ -12,7 +12,7 @@ function App() {
     setIsLoading(true)
     setError(null)
     try {
-      const remixedText = await remixContent(inputText)
+      const remixedText = await tweetsFromPost(inputText)
       setOutputText(remixedText)
     } catch (err: any) {
       setError(err.message || 'An error occurred while remixing.')
@@ -32,7 +32,7 @@ function App() {
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
         <h1 style={{ 
-          fontSize: '2.5rem', 
+          fontSize: '5rem', 
           fontWeight: 'bold', 
           color: 'black',
           margin: '0 0 10px 0'
